@@ -60,7 +60,7 @@ La primera versión del sistema contempla la medición de:
 
 El sistema estará dividido en **dos unidades físicas principales**.
 
-### ☁️ 1. Estación meteorológica — Terraza
+###  1. Estación meteorológica — Terraza
 
 Ubicada en el exterior de la institución.
 
