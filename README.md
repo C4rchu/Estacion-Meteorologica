@@ -18,7 +18,7 @@ Sistema embebido diseñado para realizar mediciones meteorológicas directamente
 
 
 
-## 📌 Descripción
+## Descripción
 
 Las condiciones meteorológicas pueden variar entre distintos puntos de una misma ciudad. Los datos proporcionados por aplicaciones y servicios meteorológicos son obtenidos a partir de estaciones ubicadas en determinados puntos geográficos, por lo que pueden existir diferencias entre esos valores y las condiciones presentes en el entorno inmediato de una institución.
 
@@ -30,27 +30,27 @@ El segundo dispositivo funcionará como unidad de visualización y permitirá co
 
 El proyecto también contempla el análisis de las señales obtenidas, filtrado, validación de mediciones, calibración de sensores, análisis de errores y evaluación de la repetibilidad de los resultados.
 
----
 
-## 🎯 Objetivo general
+
+##  Objetivo general
 
 Diseñar, construir e implementar una estación meteorológica electrónica instalada en la terraza de la institución, capaz de adquirir y procesar diferentes variables ambientales, transmitir los datos mediante comunicación inalámbrica y permitir su visualización desde un dispositivo ubicado dentro de la escuela.
 
----
 
-## 🌡️ Variables meteorológicas
+
+##  Variables meteorológicas
 
 La primera versión del sistema contempla la medición de:
 
 | Variable                  | Sensor / sistema previsto | Tipo de señal       |
 | ------------------------- | ------------------------- | ------------------- |
-| 🌡️ Temperatura           | SHT31                     | I²C                 |
-| 💧 Humedad relativa       | SHT31                     | I²C                 |
-| 🧭 Presión atmosférica    | BMP280                    | I²C / SPI           |
-| ☀️ Radiación ultravioleta | ML8511                    | Analógica           |
-| 💨 Velocidad del viento   | Anemómetro                | Pulsos              |
-| 🧭 Dirección del viento   | Veleta resistiva          | Analógica           |
-| 🌧️ Precipitaciones       | Sensor de lluvia          | Analógica / digital |
+|  Temperatura           | SHT31                     | I²C                 |
+|  Humedad relativa       | SHT31                     | I²C                 |
+|  Presión atmosférica    | BMP280                    | I²C / SPI           |
+|  Radiación ultravioleta | ML8511                    | Analógica           |
+|  Velocidad del viento   | Anemómetro                | Pulsos              |
+|  Dirección del viento   | Veleta resistiva          | Analógica           |
+|  Precipitaciones       | Sensor de lluvia          | Analógica / digital |
 
 > Los sensores indicados corresponden a las alternativas seleccionadas durante la etapa de anteproyecto. Podrán modificarse durante el desarrollo en función de disponibilidad, ensayos, precisión, costo y resultados obtenidos.
 
@@ -108,7 +108,7 @@ Sus funciones principales serán:
                ▼
 ```
 
-### 🖥️ 2. Unidad de visualización — Aula
+###  2. Unidad de visualización — Aula
 
 Ubicada dentro de la institución.
 
@@ -145,9 +145,9 @@ Sus funciones serán:
         └─────────────┘
 ```
 
----
 
-## 🔄 Funcionamiento
+
+##  Funcionamiento
 
 El funcionamiento general previsto es:
 
@@ -202,9 +202,9 @@ El funcionamiento general previsto es:
 
 Si se detecta un error en un sensor o una pérdida de comunicación, el sistema deberá identificar la situación y evitar utilizar o mostrar datos que puedan considerarse inválidos.
 
----
 
-## 🧠 Procesamiento de datos
+
+##  Procesamiento de datos
 
 Uno de los objetivos del proyecto es que las mediciones no sean simplemente leídas y mostradas, sino que sean sometidas a un procesamiento previo.
 
@@ -224,9 +224,9 @@ Se contempla implementar:
 
 El procesamiento permitirá obtener información más consistente y facilitará posteriormente el análisis de los datos registrados.
 
----
 
-## 🌧️ Detección de precipitaciones
+
+##  Detección de precipitaciones
 
 La primera versión contempla un sensor destinado a determinar la **presencia de precipitaciones**.
 
@@ -237,9 +237,9 @@ Es importante diferenciar esta función de una posible predicción meteorológic
 
 La segunda función no forma parte del funcionamiento obligatorio de la primera versión y queda planteada como una posible mejora futura.
 
----
 
-## 📡 Comunicación
+
+##  Comunicación
 
 La comunicación entre ambas unidades se realizará mediante **Wi-Fi**.
 
@@ -262,9 +262,9 @@ La comunicación entre ambas unidades se realizará mediante **Wi-Fi**.
 
 El formato de los datos transmitidos será definido durante la etapa de desarrollo.
 
----
 
-## 🔧 Hardware
+
+##  Hardware
 
 ### Control y comunicación
 
@@ -295,9 +295,9 @@ El formato de los datos transmitidos será definido durante la etapa de desarrol
 * Caja protectora
 * Estructura y soportes para sensores
 
----
 
-## 💻 Software
+
+##  Software
 
 El desarrollo contempla el uso de:
 
@@ -311,9 +311,9 @@ El desarrollo contempla el uso de:
 * Python para análisis de datos
 * KiCad para diseño de circuitos y PCB
 
----
 
-## 🧪 Mediciones y ensayos
+
+##  Mediciones y ensayos
 
 El proyecto incluye una etapa específica de caracterización y validación de los sensores.
 
@@ -329,9 +329,9 @@ Se realizarán pruebas para analizar:
 
 Cuando sea posible, las mediciones obtenidas serán comparadas con valores de referencia para determinar el comportamiento de cada sensor.
 
----
 
-## 📊 Registro y análisis
+
+##  Registro y análisis
 
 Las mediciones obtenidas podrán registrarse para estudiar su evolución a lo largo del tiempo.
 
@@ -344,9 +344,9 @@ Esto permitirá posteriormente:
 * Evaluar el comportamiento de los sensores.
 * Utilizar los datos como base para futuras mejoras del sistema.
 
----
 
-## 📁 Organización del proyecto
+
+##  Organización del proyecto
 
 La estructura del repositorio se irá organizando a medida que avance el desarrollo.
 
@@ -383,9 +383,9 @@ Estacion-Meteorologica/
 
 > La estructura podrá modificarse durante el desarrollo según las necesidades del proyecto.
 
----
 
-## 👩‍💻 Distribución de tareas
+
+## Distribución de tareas
 
 ### Carmen Besada — Sistema embebido y firmware
 
@@ -444,7 +444,7 @@ Estacion-Meteorologica/
 * Diseño de la interfaz.
 * Gestión de errores de comunicación.
 
----
+
 
 ## 📋 Alcances obligatorios
 
@@ -465,25 +465,25 @@ La primera versión del proyecto deberá permitir:
 * [ ] Instalar la estación en la terraza.
 * [ ] Validar el funcionamiento del sistema completo.
 
----
 
-## 🚀 Mejoras futuras
+
+##  Mejoras futuras
 
 Una vez alcanzado el funcionamiento básico, se podrán incorporar nuevas funcionalidades:
 
-### 🌐 Interfaz web
+###  Interfaz web
 
 Desarrollo de una página web para consultar las mediciones desde computadoras o teléfonos conectados a la red.
 
-### 📈 Históricos y gráficos
+###  Históricos y gráficos
 
 Almacenamiento de las mediciones y generación de gráficos para analizar la evolución de las variables meteorológicas.
 
-### 📱 Acceso desde celulares
+###  Acceso desde celulares
 
 Desarrollo de una interfaz adaptada a dispositivos móviles.
 
-### 🔔 Alertas
+###  Alertas
 
 Notificaciones ante determinadas condiciones meteorológicas.
 
@@ -497,19 +497,19 @@ Incorporación de:
 
 Esto permitiría que la estación funcione de forma independiente de la alimentación eléctrica convencional.
 
-### 🤖 Estimación de precipitaciones
+###  Estimación de precipitaciones
 
 Si se logra obtener una cantidad suficiente de datos reales, se podrá estudiar la utilización de técnicas de análisis de datos o aprendizaje automático para estimar la posibilidad de precipitaciones a corto plazo.
 
 Esta función será independiente del sistema de detección directa de lluvia.
 
-### 🏫 Uso institucional
+###  Uso institucional
 
 Una posible evolución del proyecto consiste en desarrollar una página accesible para los alumnos y docentes de la institución, permitiendo consultar las condiciones meteorológicas actuales y utilizar la información como referencia para actividades escolares, por ejemplo, actividades de Educación Física.
 
----
 
-## 🗓️ Plan de desarrollo
+
+##  Plan de desarrollo
 
 El proyecto se divide en cinco etapas principales:
 
@@ -556,9 +556,9 @@ El proyecto se divide en cinco etapas principales:
 * Documentación.
 * Presentación del proyecto.
 
----
 
-## 💰 Costo estimado
+
+##  Costo estimado
 
 Los valores son aproximados y pueden variar según el proveedor, disponibilidad y modelo de cada componente.
 
@@ -576,9 +576,9 @@ Los valores son aproximados y pueden variar según el proveedor, disponibilidad 
 
 > Los costos deberán actualizarse al momento de realizar la compra. También se deberá considerar el material disponible previamente en la institución.
 
----
 
-## 📚 Contexto académico
+
+##  Contexto académico
 
 Este proyecto integra conocimientos correspondientes a distintas áreas de la orientación Electrónica:
 
@@ -602,11 +602,11 @@ Durante el desarrollo se aplicarán conocimientos relacionados con:
 * Análisis de errores.
 * Adquisición y procesamiento de datos.
 
----
 
-## ⚠️ Estado del proyecto
 
-**🚧 En desarrollo — Proyecto Final de Carrera 2026**
+##  Estado del proyecto
+
+**En desarrollo — Proyecto Final de Carrera 2026**
 
 Actualmente el proyecto se encuentra en etapa de desarrollo y pruebas de los distintos subsistemas.
 
@@ -614,23 +614,23 @@ Los componentes, circuitos, algoritmos y métodos de procesamiento podrán modif
 
 La documentación de este repositorio se actualizará a medida que avance el proyecto.
 
----
 
-## 📄 Licencia
+
+##  Licencia
 
 Este proyecto fue desarrollado con fines **educativos y académicos** como parte del Proyecto Final de Carrera de la Escuela Técnica N.º 25 “Fray Luis Beltrán”.
 
----
 
-## 🏫 Institución
+
+##  Institución
 
 **Escuela Técnica N.º 25 “Fray Luis Beltrán”**
 **6.º año — Orientación Electrónica**
 **Ciclo lectivo 2026**
 
----
+
 
 <p align="center">
-  <b>🌦️ Sistema Embebido de Monitoreo Meteorológico Escolar</b><br>
+  <b> Sistema Embebido de Monitoreo Meteorológico Escolar</b><br>
   Proyecto Final de Carrera · Electrónica · 2026
 </p>
