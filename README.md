@@ -1,13 +1,13 @@
-# 🌦️ Sistema Embebido de Monitoreo Meteorológico Escolar
+#  Sistema Embebido de Monitoreo Meteorológico Escolar
 
 > **Proyecto Final de Carrera — Escuela Técnica N.º 25 “Fray Luis Beltrán”**
 > **6.º año — Orientación Electrónica — Ciclo lectivo 2026**
 
 Sistema embebido diseñado para realizar mediciones meteorológicas directamente desde la terraza de la institución, procesar los datos mediante un ESP32 y transmitirlos inalámbricamente hacia una unidad de visualización ubicada dentro de la escuela.
 
----
 
-## 👥 Integrantes
+
+##  Integrantes
 
 * **Carmen Besada**
 * **Michelle de Mello**
@@ -16,7 +16,7 @@ Sistema embebido diseñado para realizar mediciones meteorológicas directamente
 * **Joaquín Lequerica**
 * **Juan Ignacio García**
 
----
+
 
 ## 📌 Descripción
 
@@ -54,9 +54,9 @@ La primera versión del sistema contempla la medición de:
 
 > Los sensores indicados corresponden a las alternativas seleccionadas durante la etapa de anteproyecto. Podrán modificarse durante el desarrollo en función de disponibilidad, ensayos, precisión, costo y resultados obtenidos.
 
----
 
-## 🏗️ Arquitectura del sistema
+
+##  Arquitectura del sistema
 
 El sistema estará dividido en **dos unidades físicas principales**.
 
