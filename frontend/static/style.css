@@ -1,0 +1,38 @@
+body {
+    background: #1a1a1a;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 10px;
+    width: 800px;
+    height: 480px;
+    overflow: hidden;
+}
+
+.dashboard { display: flex; flex-direction: column; height: 100%; }
+header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding: 10px; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.card {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.card span { font-size: 0.8rem; color: #888; }
+.card div { font-size: 2.5rem; font-weight: bold; }
+
+.rain-on { color: #0088ff; }
+.rain-off { color: #555; }
