@@ -605,12 +605,15 @@ Durante el desarrollo se aplicarán conocimientos relacionados con:
 
 
 ##  Estado del proyecto
+ 
+ **En desarrollo — Proyecto Final de Carrera 2026**
+ 
+ Actualmente el proyecto se encuentra en etapa de desarrollo y pruebas de los distintos subsistemas.
 
-**En desarrollo — Proyecto Final de Carrera 2026**
+> **Nota:** Se ha integrado un display de 4" (ST7796) para la visualización. El código base para la inicialización está cargado, pero la pantalla aún no muestra información correctamente. Se sigue trabajando en la configuración de la librería y las conexiones físicas.
+ 
+ Los componentes, circuitos, algoritmos y métodos de procesamiento podrán modificarse durante el desarrollo en función de los resultados obtenidos en los ensayos.
 
-Actualmente el proyecto se encuentra en etapa de desarrollo y pruebas de los distintos subsistemas.
-
-Los componentes, circuitos, algoritmos y métodos de procesamiento podrán modificarse durante el desarrollo en función de los resultados obtenidos en los ensayos.
 
 La documentación de este repositorio se actualizará a medida que avance el proyecto.
 
