@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estación Meteorológica Escolar</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Estación Meteorológica Escolar</h1>
+            <div id="timestamp">Última actualización: --:--:--</div>
+        </header>
+        
+        <div class="grid">
+            <div class="card"><span>Temp</span><div id="temp">--</div>°C</div>
+            <div class="card"><span>Hum</span><div id="hum">--</div>%</div>
+            <div class="card"><span>Pres</span><div id="pres">--</div>hPa</div>
+            <div class="card"><span>UV</span><div id="uv">--</div></div>
+            <div class="card"><span>Viento</span><div id="wind">--</div>km/h</div>
+            <div class="card"><span>Dir</span><div id="dir">--</div></div>
+            <div class="card" id="rain-card"><span>Lluvia</span><div id="rain">--</div></div>
+        </div>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>

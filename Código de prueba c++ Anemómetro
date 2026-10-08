@@ -1,0 +1,63 @@
+// Código de prueba para medir la velocidad del viento con el anemómetro, una pantalla LCD y un ESP32
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+
+// Configurar dirección I2C 
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+const int reedPin = D5; // Pin D5 (GPIO 14) conectado al reed switch
+volatile unsigned int pulseCount = 0;
+volatile unsigned long lastInterruptTime = 0;
+
+unsigned long lastTime = 0;
+float windSpeed = 0;
+
+
+void ICACHE_RAM_ATTR countPulse() {
+  unsigned long interruptTime = millis();
+  if (interruptTime - lastInterruptTime > 15) {
+    pulseCount++;
+    lastInterruptTime = interruptTime;
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(reedPin, INPUT_PULLUP); // Activa la resistencia interna
+  attachInterrupt(digitalPinToInterrupt(reedPin), countPulse, FALLING);
+
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Anemometro Reed");
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+  // Cada 1 segundo se calcula la velocidad
+  if (millis() - lastTime >= 1000) {
+    detachInterrupt(digitalPinToInterrupt(reedPin)); // Pausar interrupciones de forma segura
+    
+    unsigned int pulses = pulseCount;
+    pulseCount = 0;
+    lastTime = millis();
+    
+    attachInterrupt(digitalPinToInterrupt(reedPin), countPulse, FALLING); // Reactivar
+
+    // 3 pulsos = 1 vuelta
+    float revs = (float)pulses / 3.0; 
+    
+    // Fórmula de conversión a km/h 
+    windSpeed = revs * 2.4; 
+
+    // Mostrar en el LCD
+    lcd.setCursor(0, 0);
+    lcd.print("Velocidad:     ");
+    lcd.setCursor(0, 1);
+    lcd.print(windSpeed);
+    lcd.print(" km/h    ");
+  }
+}
+
