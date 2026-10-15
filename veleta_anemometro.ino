@@ -35,11 +35,16 @@ void IRAM_ATTR countPulse() {
 
 //Esta función transforma el valor analógico que entrega la veleta en una dirección cardinal.
 String getWindDirection(int sensorValue) {
-  if (sensorValue >= 2000 && sensorValue <= 3800) return "Sur (S)";  
-  if (sensorValue >= 1000 && sensorValue < 2000)  return "Oeste (W)";  
-  if (sensorValue >= 400  && sensorValue < 1000)  return "Norte (N)";
-  if (sensorValue < 400)                          return "Este (E)";
+  // Ajuste más amplio para mayor tolerancia al ruido:
+  // - Este (E):  0 - 400
+  // - Norte (N): 500 - 1500
+  // - Sur (S):   2000 - 3000
   
+  if (sensorValue >= 2000 && sensorValue <= 3000) return "Sur (S)";
+  if (sensorValue >= 500  && sensorValue < 1500)  return "Norte (N)";
+  if (sensorValue >= 0    && sensorValue < 400)   return "Este (E)";
+  
+  // El valor 4095 indica que el circuito está abierto (no hay contacto reed switch)
   return "---";
 }
 
@@ -55,17 +60,23 @@ void setup() {
   tft.setRotation(1); // Orientación horizontal (Landscape)
   tft.fillScreen(ST77XX_BLACK);
 
-  // Pantalla de presentación inicial
-  tft.drawRect(10, 10, 460, 300, ST77XX_RED); // Marco exterior
+  // --- Dibujar los 2 cuadrados con bordes redondeados ---
+  // Cuadrado 1 (Velocidad)
+  tft.fillRoundRect(20, 60, 210, 200, 20, ST77XX_RED);
+  tft.drawRoundRect(20, 60, 210, 200, 20, ST77XX_WHITE);
   
+  // Cuadrado 2 (Dirección)
+  tft.fillRoundRect(250, 60, 210, 200, 20, ST77XX_RED);
+  tft.drawRoundRect(250, 60, 210, 200, 20, ST77XX_WHITE);
+  
+  // Etiquetas fijas
   tft.setTextColor(ST77XX_WHITE);
-  tft.setTextSize(3);
-  tft.setCursor(40, 40);
-  tft.println("ESTACION METEOROLOGICA");
-
   tft.setTextSize(2);
-  tft.setCursor(40, 110);
-  tft.println("Iniciando sistema...");
+  tft.setCursor(50, 75);
+  tft.println("VELOCIDAD");
+  
+  tft.setCursor(280, 75);
+  tft.println("DIRECCION");
 
   lastTimeStartup = millis();
   lastTimeSpeed = millis();
@@ -75,28 +86,25 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-  // 1. Pantalla de presentación inicial de 2 segundos sin delay
+  // 1. Pantalla de presentación (simplificada)
   if (startupPhase) {
     if (currentMillis - lastTimeStartup >= 2000) {
-      // Limpiamos la zona de la presentación para dejar la interfaz fija
-      tft.fillRect(30, 100, 400, 40, ST77XX_BLACK);
-      
-      tft.setTextSize(2);
-      tft.setTextColor(ST77XX_WHITE);
-      
-      tft.setCursor(40, 100);
-      tft.println("Velocidad del Viento:");
-
-      tft.setCursor(40, 200);
-      tft.println("Direccion del Viento:");
-      
       startupPhase = false;
     }
     return;  
   }
 
-  // 2. Leemos la veleta constantemente de forma analógica (los 2 cables que vienen de los 4 reed switch)
-  int rawVeleta = analogRead(veletaPin);
+  // 2. Leemos la veleta constantemente de forma analógica con promedio para suavizar ruido
+  long sum = 0;
+  for (int i = 0; i < 10; i++) {
+    sum += analogRead(veletaPin);
+    delay(2); // Pequeña pausa para estabilizar ADC
+  }
+  int rawVeleta = sum / 10;
+  
+  // Imprimir valor para calibración (Comenta esta línea después de calibrar para mejor rendimiento)
+  Serial.println("Valor ADC actual: " + String(rawVeleta));
+  
   currentDir = getWindDirection(rawVeleta);
 
   // 3. Cálculo de velocidad del anemómetro cada 1 segundo (con la lógica original exacta)
@@ -129,22 +137,25 @@ void loop() {
     lastTimeLCD = currentMillis;
 
     // --- Renderizar Velocidad ---
-    tft.fillRect(40, 130, 300, 50, ST77XX_BLACK);
-    tft.setTextColor(ST77XX_GREEN);
+    // Área roja para limpiar texto anterior
+    tft.fillRect(40, 110, 170, 100, ST77XX_RED);
+    
+    tft.setTextColor(ST77XX_WHITE);
     tft.setTextSize(4);
-    tft.setCursor(40, 135);
+    tft.setCursor(50, 120);
     tft.print(windSpeed, 1); // Con 1 decimal
 
     tft.setTextSize(2);
-    tft.setCursor(210, 155);
-    tft.setTextColor(ST77XX_WHITE);
+    tft.setCursor(50, 170);
     tft.print("km/h");
 
-    // --- Renderizar Dirección (de los 4 reed switch) ---
-    tft.fillRect(40, 230, 380, 50, ST77XX_BLACK);
-    tft.setTextColor(ST77XX_CYAN);
-    tft.setTextSize(4);
-    tft.setCursor(40, 235);
+    // --- Renderizar Dirección ---
+    // Área roja para limpiar texto anterior
+    tft.fillRect(270, 110, 170, 100, ST77XX_RED);
+    
+    tft.setTextColor(ST77XX_WHITE);
+    tft.setTextSize(3);
+    tft.setCursor(280, 130);
     tft.print(currentDir);
   }
 }
