@@ -44,9 +44,7 @@ La primera versión del sistema contempla la medición de:
 
 | Variable                  | Sensor / sistema previsto | Tipo de señal       |
 | ------------------------- | ------------------------- | ------------------- |
-|  Temperatura           | SHT31                     | I²C                 |
-|  Humedad relativa       | SHT31                     | I²C                 |
-|  Presión atmosférica    | BMP280                    | I²C / SPI           |
+|  Presión atmosférica/Humedad relativa/Temperatura      | BMP280                    | I²C / SPI           |
 |  Radiación ultravioleta | ML8511                    | Analógica           |
 |  Velocidad del viento   | Anemómetro                | Pulsos              |
 |  Dirección del viento   | Veleta resistiva          | Analógica           |
