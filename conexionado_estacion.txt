@@ -10,7 +10,8 @@ DHT22           | GPIO 4
 Pluviómetro     | GPIO 2
 Anemómetro      | GPIO 5
 Veleta          | GPIO 34 (ADC)
-YL-83           | GPIO 35 (ADC)
+YL-83 (AO)      | GPIO 35 (ADC)
+YL-83 (DO)      | GPIO 33 (Digital)
 Sensor UV       | GPIO 32 (ADC)
 
 ESP32 PANTALLA (RECEPTOR - 30 pines)
