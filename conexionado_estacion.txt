@@ -24,3 +24,4 @@ TFT SCLK        | GPIO 18
 TFT CS          | GPIO 5
 TFT DC          | GPIO 2
 TFT RST         | GPIO 4
+TFT TOUCH CS    | GPIO 25
