@@ -1,0 +1,17 @@
+PROYECTO: ESTACIÓN METEOROLÓGICA ESP32
+
+ESTADO:
+- Estructura de carpetas creada (/firmware/terraza, /firmware/pantalla).
+- Código antiguo y nuevo (incluyendo YL_83.ino) movido a /scripts_legados.
+- Comunicación ESP-NOW definida en DataStructure.h.
+- Conexionado finalizado (ver conexionado_estacion.txt).
+
+PENDIENTES:
+1. Obtener y configurar direcciones MAC (Receptor/Emisor).
+2. Integrar código sensores finales (YL83, BME180, DHT22) en firmware/terraza.
+3. Terminar lógica de navegación de pantallas en firmware/pantalla.
+4. Integrar Web Server en Terraza.
+
+MAC ADDRESSES (PENDIENTE DE RELLENAR):
+- Terraza (Emisor): [INSERTAR AQUÍ]
+- Pantalla (Receptor): [INSERTAR AQUÍ]
