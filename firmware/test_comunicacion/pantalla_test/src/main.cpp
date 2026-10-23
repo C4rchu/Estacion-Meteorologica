@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <esp_now.h>
 #include <WiFi.h>
+#include <esp_wifi.h>
 #include <TFT_eSPI.h>
 #include "DataStructure.h"
 
@@ -31,10 +32,14 @@ void setup() {
     tft.setTextSize(2);
     tft.drawString("Esperando datos...", 10, 10);
 
-    if (esp_now_init() != ESP_OK) { 
+    if (esp_now_init() != ESP_OK) {
+        
         Serial.println("Error ESP-NOW"); 
         return; 
+        esp_wifi_set_promiscuous(true); 
+
     }
+
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
     Serial.println("Receptor listo. Esperando...");
     Serial.print("Dirección MAC:");
@@ -42,4 +47,3 @@ void setup() {
 }
 
 void loop() { }
-    
