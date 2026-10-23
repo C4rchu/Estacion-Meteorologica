@@ -21,6 +21,8 @@ void setup() {
     if (!bmp.begin()) { Serial.println("Error BMP180"); while(1); }
     
     dht.begin();
+    pinMode(PIN_YL83_DO, INPUT);
+    pinMode(PIN_SENSOR_UV, INPUT);
     
     // Configuración robusta de Wi-Fi
     WiFi.mode(WIFI_STA);
@@ -69,10 +71,18 @@ void loop() {
     
     data.presion = bmp.readPressure() / 100.0F;
     
+    // Leer YL83 (DO) - LOW si llueve
+    data.llueve = (digitalRead(PIN_YL83_DO) == LOW);
+    
+    // Leer UV (Analog)
+    int uvValue = analogRead(PIN_SENSOR_UV);
+    data.uv = uvValue * (3.3 / 4095.0); // Convertir a voltaje, se puede escalar a índice UV si se conoce la curva
+    
     esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &data, sizeof(data));
     
     if (result == ESP_OK) {
-        Serial.printf("Enviado con éxito: T=%.2f, H=%.2f, P=%.2f\n", data.tempPromedio, data.humedad, data.presion);
+        Serial.printf("Enviado con éxito: T=%.2f, H=%.2f, P=%.2f, Lluvia=%s, UV=%.2fV\n", 
+                      data.tempPromedio, data.humedad, data.presion, data.llueve ? "Si" : "No", data.uv);
     } else {
         Serial.println("Error en el envío");
     }
