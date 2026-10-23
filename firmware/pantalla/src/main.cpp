@@ -1,33 +1,87 @@
+#include <Arduino.h>
+#include <esp_now.h>
+#include <WiFi.h>
+#include "DataStructure.h"
 #include <TFT_eSPI.h>
-#include <SPI.h>
 
-// Pines configurados en platformio.ini (segun conexionado_estacion.txt):
-// CS=5, DC=2, RST=4, MOSI=23, MISO=19, SCLK=18
 TFT_eSPI tft = TFT_eSPI();
+WeatherData receivedData;
+bool newData = false;
+
+enum ScreenState { RESUMEN, SENSORES, VIENTO };
+ScreenState currentState = RESUMEN;
+unsigned long lastScreenChange = 0;
+const long screenInterval = 5000; // 5 segundos
+
+void drawResumen() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("RESUMEN", 10, 10);
+    tft.setTextSize(3);
+    tft.drawString("Temp: " + String(receivedData.tempPromedio, 1) + " C", 10, 60);
+    tft.drawString("Hum: " + String(receivedData.humedad, 1) + " %", 10, 100);
+}
+
+void drawSensores() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("SENSORES", 10, 10);
+    tft.setTextSize(3);
+    tft.drawString("UV: " + String(receivedData.uv, 1), 10, 60);
+    tft.drawString("Pres: " + String(receivedData.presion, 0) + " hPa", 10, 100);
+}
+
+void drawViento() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("VIENTO", 10, 10);
+    tft.setTextSize(3);
+    tft.drawString("Vel: " + String(receivedData.velocidadViento, 1) + " km/h", 10, 60);
+    tft.drawString("Dir: " + String(receivedData.direccionViento), 10, 100);
+}
+
+void drawCurrentScreen() {
+    switch (currentState) {
+        case RESUMEN: drawResumen(); break;
+        case SENSORES: drawSensores(); break;
+        case VIENTO: drawViento(); break;
+    }
+}
+
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+    memcpy(&receivedData, incomingData, sizeof(receivedData));
+    newData = true;
+}
 
 void setup() {
-  Serial.begin(115200);
+    Serial.begin(115200);
+    tft.init();
+    tft.setRotation(1);
+    tft.fillScreen(TFT_BLACK);
 
-  // Inicializar la pantalla ST7796S
-  tft.init();
-  tft.setRotation(1); // Orientacion horizontal (Landscape)
-  tft.fillScreen(TFT_BLACK);
-
-  // Pantalla de bienvenida
-  tft.setTextColor(TFT_GREEN, TFT_BLACK);
-  tft.setTextSize(3);
-  tft.setCursor(40, 50);
-  tft.println("SISTEMA LISTO");
-
-  tft.setTextSize(2);
-  tft.setCursor(40, 100);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.println("Pantalla configurada");
-  tft.setCursor(40, 130);
-  tft.println("correctamente.");
-
-  Serial.println("Pantalla ST7796S inicializada.");
+    WiFi.mode(WIFI_STA);
+    if (esp_now_init() != ESP_OK) {
+        Serial.println("Error initializing ESP-NOW");
+        return;
+    }
+    esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
+    
+    Serial.println("Receptor ESP-NOW listo");
 }
 
 void loop() {
+    // Cambio automático de pantalla
+    if (millis() - lastScreenChange > screenInterval) {
+        lastScreenChange = millis();
+        currentState = (ScreenState)((currentState + 1) % 3);
+        drawCurrentScreen();
+    }
+    // Actualización si llegan datos nuevos
+    if (newData) {
+        drawCurrentScreen();
+        newData = false;
+    }
 }
