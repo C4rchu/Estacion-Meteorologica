@@ -1,32 +1,32 @@
-#include <Adafruit_GFX.h>
-#include <Adafruit_ST7796S.h>
+#include <TFT_eSPI.h>
 #include <SPI.h>
 
-// Definición de pines para la pantalla ST7796S en el ESP32
-#define TFT_CS   15  
-#define TFT_DC    2  
-#define TFT_RST   4  
-
-Adafruit_ST7796S tft = Adafruit_ST7796S(TFT_CS, TFT_DC, TFT_RST);
+// Pines configurados en platformio.ini (segun conexionado_estacion.txt):
+// CS=5, DC=2, RST=4, MOSI=23, MISO=19, SCLK=18
+TFT_eSPI tft = TFT_eSPI();
 
 void setup() {
+  Serial.begin(115200);
+
   // Inicializar la pantalla ST7796S
-  tft.init(320, 480);
-  tft.setRotation(1); // Orientación horizontal (Landscape)
-  tft.fillScreen(ST77XX_BLACK);
+  tft.init();
+  tft.setRotation(1); // Orientacion horizontal (Landscape)
+  tft.fillScreen(TFT_BLACK);
 
   // Pantalla de bienvenida
-  tft.setTextColor(ST77XX_GREEN);
+  tft.setTextColor(TFT_GREEN, TFT_BLACK);
   tft.setTextSize(3);
   tft.setCursor(40, 50);
   tft.println("SISTEMA LISTO");
 
   tft.setTextSize(2);
   tft.setCursor(40, 100);
-  tft.setTextColor(ST77XX_WHITE);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.println("Pantalla configurada");
   tft.setCursor(40, 130);
   tft.println("correctamente.");
+
+  Serial.println("Pantalla ST7796S inicializada.");
 }
 
 void loop() {
