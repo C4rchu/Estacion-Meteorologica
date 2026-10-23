@@ -3,11 +3,12 @@
 #include <Adafruit_BMP085.h>
 #include <esp_now.h>
 #include <WiFi.h>
+#include <esp_wifi.h> // Necesario para esp_wifi_set_promiscuous
 #include "DataStructure.h"
 #include "Sensores.h"
 
 Adafruit_BMP085 bmp;
-uint8_t receiverMAC[] = {0x68, 0x09, 0x47, 0x57, 0xC9, 0xDC};
+uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 void setup() {
     Serial.begin(115200);
@@ -18,10 +19,14 @@ void setup() {
     if (esp_now_init() != ESP_OK) { Serial.println("Error ESP-NOW"); return; }
     
     esp_now_peer_info_t peerInfo;
-    memcpy(peerInfo.peer_addr, receiverMAC, 6);
-    peerInfo.channel = 0;
+    memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+    peerInfo.channel = 1; // Forzamos canal 1
     peerInfo.encrypt = false;
-    esp_now_add_peer(&peerInfo);
+    
+    if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+        Serial.println("Error al añadir peer");
+        return;
+    }
 }
 
 void loop() {
@@ -29,7 +34,7 @@ void loop() {
     data.tempPromedio = bmp.readTemperature();
     data.presion = bmp.readPressure() / 100.0F;
     
-    esp_err_t result = esp_now_send(receiverMAC, (uint8_t *) &data, sizeof(data));
+    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &data, sizeof(data));
     
     if (result == ESP_OK) {
         Serial.printf("Enviado con éxito: T=%.2f, P=%.2f\n", data.tempPromedio, data.presion);
