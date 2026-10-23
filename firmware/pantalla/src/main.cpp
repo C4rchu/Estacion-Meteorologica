@@ -2,32 +2,86 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include "DataStructure.h"
+#include <TFT_eSPI.h>
 
-// Variables para guardar los datos recibidos
+TFT_eSPI tft = TFT_eSPI();
 WeatherData receivedData;
+bool newData = false;
 
-// Función callback que se ejecuta al recibir datos
+enum ScreenState { RESUMEN, SENSORES, VIENTO };
+ScreenState currentState = RESUMEN;
+unsigned long lastScreenChange = 0;
+const long screenInterval = 5000; // 5 segundos
+
+void drawResumen() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("RESUMEN", 10, 10);
+    tft.setTextSize(3);
+    tft.drawString("Temp: " + String(receivedData.tempPromedio, 1) + " C", 10, 60);
+    tft.drawString("Hum: " + String(receivedData.humedad, 1) + " %", 10, 100);
+}
+
+void drawSensores() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("SENSORES", 10, 10);
+    tft.setTextSize(3);
+    tft.drawString("UV: " + String(receivedData.uv, 1), 10, 60);
+    tft.drawString("Pres: " + String(receivedData.presion, 0) + " hPa", 10, 100);
+}
+
+void drawViento() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("VIENTO", 10, 10);
+    tft.setTextSize(3);
+    tft.drawString("Vel: " + String(receivedData.velocidadViento, 1) + " km/h", 10, 60);
+    tft.drawString("Dir: " + String(receivedData.direccionViento), 10, 100);
+}
+
+void drawCurrentScreen() {
+    switch (currentState) {
+        case RESUMEN: drawResumen(); break;
+        case SENSORES: drawSensores(); break;
+        case VIENTO: drawViento(); break;
+    }
+}
+
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-  memcpy(&receivedData, incomingData, sizeof(receivedData));
-  Serial.println("Datos recibidos por ESP-NOW:");
-  Serial.print("Temp: "); Serial.println(receivedData.tempPromedio);
-  // Aquí irá la lógica para actualizar la pantalla con los nuevos datos
+    memcpy(&receivedData, incomingData, sizeof(receivedData));
+    newData = true;
 }
 
 void setup() {
-  Serial.begin(115200);
-  WiFi.mode(WIFI_STA);
+    Serial.begin(115200);
+    tft.init();
+    tft.setRotation(1);
+    tft.fillScreen(TFT_BLACK);
 
-  if (esp_now_init() != ESP_OK) {
-    Serial.println("Error initializing ESP-NOW");
-    return;
-  }
-
-  esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
-  
-  Serial.println("Receptor ESP-NOW listo");
+    WiFi.mode(WIFI_STA);
+    if (esp_now_init() != ESP_OK) {
+        Serial.println("Error initializing ESP-NOW");
+        return;
+    }
+    esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
+    
+    Serial.println("Receptor ESP-NOW listo");
 }
 
 void loop() {
-  // El loop puede estar libre para la lógica de la pantalla
+    // Cambio automático de pantalla
+    if (millis() - lastScreenChange > screenInterval) {
+        lastScreenChange = millis();
+        currentState = (ScreenState)((currentState + 1) % 3);
+        drawCurrentScreen();
+    }
+    // Actualización si llegan datos nuevos
+    if (newData) {
+        drawCurrentScreen();
+        newData = false;
+    }
 }

@@ -20,8 +20,13 @@ Componente      | Pin GPIO ESP32
 ----------------|---------------
 TFT MOSI        | GPIO 23
 TFT MISO        | GPIO 19
-TFT SCLK        | GPIO 18
+TFT SCLK        | GPIO 18 (Compartido con T_CLK)
 TFT CS          | GPIO 5
 TFT DC          | GPIO 2
 TFT RST         | GPIO 4
 TFT TOUCH CS    | GPIO 25
+T_DIN           | GPIO 23 (Compartido con TFT MOSI)
+T_DO            | GPIO 19 (Compartido con TFT MISO)
+VCC             | 3.3V / 5V
+GND             | GND
+LED             | 3.3V / 5V (Backlight)

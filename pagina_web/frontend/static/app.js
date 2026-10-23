@@ -14,8 +14,15 @@ async function updateDashboard() {
         rainEl.innerText = data.rain ? 'SÍ' : 'NO';
         rainEl.className = data.rain ? 'rain-on' : 'rain-off';
         
-        document.getElementById('timestamp').innerText = `Última actualización: ${data.timestamp}`;
-    } catch (error) {
+        // Lógica simple para cambiar el icono
+        const imgElement = document.getElementById('weather-img');
+        if (data.rain) {
+            imgElement.src = '/static/clima/lluvia.png';
+        } else if (data.temperature > 25) {
+            imgElement.src = '/static/clima/sol.png';
+        } else {
+            imgElement.src = '/static/clima/sol_y_nubes.png';
+        }
         console.error('Error fetching data:', error);
     }
 }
