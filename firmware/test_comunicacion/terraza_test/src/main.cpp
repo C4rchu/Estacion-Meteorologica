@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_BMP085.h>
+#include <DHT.h>
 #include <esp_now.h>
 #include <WiFi.h>
 #include <esp_wifi.h> 
@@ -8,6 +9,7 @@
 #include "Sensores.h"
 
 Adafruit_BMP085 bmp;
+DHT dht(PIN_DHT22, DHT22);
 uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 void setup() {
@@ -17,6 +19,8 @@ void setup() {
     
     Wire.begin(PIN_BME180_SDA, PIN_BME180_SCL);
     if (!bmp.begin()) { Serial.println("Error BMP180"); while(1); }
+    
+    dht.begin();
     
     // Configuración robusta de Wi-Fi
     WiFi.mode(WIFI_STA);
@@ -47,14 +51,28 @@ void setup() {
 }
 
 void loop() {
+    float h = dht.readHumidity();
+    float t_dht = dht.readTemperature();
+    float t_bmp = bmp.readTemperature();
+    
     WeatherData data;
-    data.tempPromedio = bmp.readTemperature();
+    
+    // Validar lecturas
+    if (isnan(h) || isnan(t_dht)) {
+        Serial.println("Error al leer el DHT22");
+        data.humedad = 0;
+        data.tempPromedio = t_bmp; // Si falla DHT, usar solo BMP
+    } else {
+        data.humedad = h;
+        data.tempPromedio = (t_bmp + t_dht) / 2.0;
+    }
+    
     data.presion = bmp.readPressure() / 100.0F;
     
     esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &data, sizeof(data));
     
     if (result == ESP_OK) {
-        Serial.printf("Enviado con éxito: T=%.2f, P=%.2f\n", data.tempPromedio, data.presion);
+        Serial.printf("Enviado con éxito: T=%.2f, H=%.2f, P=%.2f\n", data.tempPromedio, data.humedad, data.presion);
     } else {
         Serial.println("Error en el envío");
     }

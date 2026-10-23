@@ -15,8 +15,9 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     tft.fillScreen(TFT_BLACK);
     tft.setCursor(10, 10);
     tft.setTextColor(TFT_WHITE);
-    tft.setTextSize(3);
+    tft.setTextSize(2);
     tft.printf("Temp: %.1f C\n", receivedData.tempPromedio);
+    tft.printf("Hum : %.1f %%\n", receivedData.humedad);
     tft.printf("Pres: %.0f hPa", receivedData.presion);
 }
 
