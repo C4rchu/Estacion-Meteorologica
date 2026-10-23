@@ -23,6 +23,7 @@ async function updateDashboard() {
         } else {
             imgElement.src = '/static/clima/sol_y_nubes.png';
         }
+    } catch (error) {
         console.error('Error fetching data:', error);
     }
 }

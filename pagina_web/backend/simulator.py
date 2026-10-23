@@ -23,10 +23,10 @@ class WeatherSimulator:
 
     def get_data(self):
         # Evolución gradual
-        self.state["temperature"] = self._random_walk(self.state["temperature"], 10, 40, 0.2)
-        self.state["humidity"] = self._random_walk(self.state["humidity"], 30, 90, 0.5)
-        self.state["pressure"] = self._random_walk(self.state["pressure"], 1000, 1020, 0.3)
-        self.state["wind_speed"] = max(0, self._random_walk(self.state["wind_speed"], 0, 50, 2))
+        self.state["temperature"] = self._random_walk(self.state["temperature"], 10, 40, 0.5)
+        self.state["humidity"] = self._random_walk(self.state["humidity"], 30, 90, 1.0)
+        self.state["pressure"] = self._random_walk(self.state["pressure"], 1000, 1020, 0.8)
+        self.state["wind_speed"] = max(0, self._random_walk(self.state["wind_speed"], 0, 50, 5))
         
         # Dirección viento simple
         if random.random() < 0.1:
