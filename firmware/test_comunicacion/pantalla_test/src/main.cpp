@@ -8,6 +8,7 @@ TFT_eSPI tft = TFT_eSPI();
 WeatherData receivedData;
 
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+    Serial.println("¡Datos recibidos!");
     memcpy(&receivedData, incomingData, sizeof(receivedData));
     
     tft.fillScreen(TFT_BLACK);
@@ -19,13 +20,21 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 }
 
 void setup() {
+    Serial.begin(115200);
     tft.init();
     tft.setRotation(1);
     tft.fillScreen(TFT_BLACK);
-    
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("Esperando datos...", 10, 10);
+
     WiFi.mode(WIFI_STA);
-    if (esp_now_init() != ESP_OK) { return; }
+    if (esp_now_init() != ESP_OK) { 
+        Serial.println("Error ESP-NOW"); 
+        return; 
+    }
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
+    Serial.println("Receptor listo. Esperando...");
 }
 
 void loop() { }
