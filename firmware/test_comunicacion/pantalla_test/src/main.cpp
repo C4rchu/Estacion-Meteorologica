@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <esp_now.h>
 #include <WiFi.h>
+#include <esp_wifi.h> // Necesario para configurar el canal
 #include <TFT_eSPI.h>
 #include "DataStructure.h"
 
@@ -22,6 +23,12 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 void setup() {
     Serial.begin(115200);
     WiFi.mode(WIFI_STA);
+    
+    // Forzar canal 1
+    esp_wifi_set_promiscuous(true);
+    esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
+    esp_wifi_set_promiscuous(false);
+
     Serial.print("MAC del Receptor: ");
     Serial.println(WiFi.macAddress());
     tft.init();
