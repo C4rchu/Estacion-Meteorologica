@@ -13,5 +13,5 @@ PENDIENTES:
 4. Integrar Web Server en Terraza.
 
 MAC ADDRESSES (PENDIENTE DE RELLENAR):
-- Terraza (Emisor): [INSERTAR AQUÍ]
-- Pantalla (Receptor): [INSERTAR AQUÍ]
+- Terraza (Emisor): 10:06:1C:83:AC:B8
+- Pantalla (Receptor): 68:09:47:57:C9:DC

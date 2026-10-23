@@ -1,33 +1,33 @@
-#include <Adafruit_GFX.h>
-#include <Adafruit_ST7796S.h>
-#include <SPI.h>
+#include <Arduino.h>
+#include <esp_now.h>
+#include <WiFi.h>
+#include "DataStructure.h"
 
-// Definición de pines para la pantalla ST7796S en el ESP32
-#define TFT_CS   15  
-#define TFT_DC    2  
-#define TFT_RST   4  
+// Variables para guardar los datos recibidos
+WeatherData receivedData;
 
-Adafruit_ST7796S tft = Adafruit_ST7796S(TFT_CS, TFT_DC, TFT_RST);
+// Función callback que se ejecuta al recibir datos
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+  memcpy(&receivedData, incomingData, sizeof(receivedData));
+  Serial.println("Datos recibidos por ESP-NOW:");
+  Serial.print("Temp: "); Serial.println(receivedData.tempPromedio);
+  // Aquí irá la lógica para actualizar la pantalla con los nuevos datos
+}
 
 void setup() {
-  // Inicializar la pantalla ST7796S
-  tft.init(320, 480);
-  tft.setRotation(1); // Orientación horizontal (Landscape)
-  tft.fillScreen(ST77XX_BLACK);
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
 
-  // Pantalla de bienvenida
-  tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(3);
-  tft.setCursor(40, 50);
-  tft.println("SISTEMA LISTO");
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
 
-  tft.setTextSize(2);
-  tft.setCursor(40, 100);
-  tft.setTextColor(ST77XX_WHITE);
-  tft.println("Pantalla configurada");
-  tft.setCursor(40, 130);
-  tft.println("correctamente.");
+  esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
+  
+  Serial.println("Receptor ESP-NOW listo");
 }
 
 void loop() {
+  // El loop puede estar libre para la lógica de la pantalla
 }
