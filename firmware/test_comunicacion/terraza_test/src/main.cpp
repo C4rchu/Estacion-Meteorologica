@@ -12,7 +12,9 @@ uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 void setup() {
     Serial.begin(115200);
-    delay(2000); // Esperar a que el puerto serial se estabilice
+    delay(2000); 
+    Serial.println("--- INICIANDO SETUP ---");
+    
     Wire.begin(PIN_BME180_SDA, PIN_BME180_SCL);
     if (!bmp.begin()) { Serial.println("Error BMP180"); while(1); }
     
