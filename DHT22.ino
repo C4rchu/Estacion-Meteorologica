@@ -39,5 +39,5 @@ void loop() {
     }
   }
 
-  // Aquí puedes agregar otros procesos sin que sean bloqueados por el sensor
+
 }
