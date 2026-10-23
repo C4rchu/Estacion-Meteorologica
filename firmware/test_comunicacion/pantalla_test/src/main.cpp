@@ -42,7 +42,6 @@ void setup() {
         
         Serial.println("Error ESP-NOW"); 
         return; 
-        esp_wifi_set_promiscuous(true); 
 
     }
 
