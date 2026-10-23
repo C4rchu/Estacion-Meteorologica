@@ -18,7 +18,9 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     tft.setTextSize(2);
     tft.printf("Temp: %.1f C\n", receivedData.tempPromedio);
     tft.printf("Hum : %.1f %%\n", receivedData.humedad);
-    tft.printf("Pres: %.0f hPa", receivedData.presion);
+    tft.printf("Pres: %.0f hPa\n", receivedData.presion);
+    tft.printf("Lluvia: %s\n", receivedData.llueve ? "Si" : "No");
+    tft.printf("UV: %.2f V", receivedData.uv);
 }
 
 void setup() {
