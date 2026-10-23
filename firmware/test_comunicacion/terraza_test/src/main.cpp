@@ -18,23 +18,27 @@ void setup() {
     Wire.begin(PIN_BME180_SDA, PIN_BME180_SCL);
     if (!bmp.begin()) { Serial.println("Error BMP180"); while(1); }
     
+    // Configuración robusta de Wi-Fi
     WiFi.mode(WIFI_STA);
-    
-    // Forzar canal 1
     esp_wifi_set_promiscuous(true);
     esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
     esp_wifi_set_promiscuous(false);
+    WiFi.disconnect(); 
     
     Serial.print("Canal Wi-Fi: ");
     Serial.println(WiFi.channel());
 
     if (esp_now_init() != ESP_OK) { Serial.println("Error ESP-NOW"); return; }
     
-    esp_now_peer_info_t peerInfo;
+    // PEQUEÑA ESPERA PARA ESTABILIZAR EL ESP-NOW
+    delay(1000); 
+
+    esp_now_peer_info_t peerInfo = {}; // Inicializar en cero
     memcpy(peerInfo.peer_addr, broadcastAddress, 6);
-    peerInfo.channel = 1; // Forzamos canal 1
+    peerInfo.channel = 1; 
     peerInfo.encrypt = false;
     
+    // Intentar añadir el peer
     if (esp_now_add_peer(&peerInfo) != ESP_OK) {
         Serial.println("Error al añadir peer");
         return;
