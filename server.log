@@ -1732,3 +1732,8 @@ INFO:     127.0.0.1:44052 - "GET /api/weather HTTP/1.1" 200 OK
 INFO:     127.0.0.1:38844 - "GET /api/weather HTTP/1.1" 200 OK
 INFO:     127.0.0.1:54884 - "GET /api/weather HTTP/1.1" 200 OK
 INFO:     127.0.0.1:40442 - "GET /api/weather HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58306 - "GET /api/weather HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54856 - "GET /api/weather HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60422 - "GET /api/weather HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54428 - "GET /api/weather HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47706 - "GET /api/weather HTTP/1.1" 200 OK

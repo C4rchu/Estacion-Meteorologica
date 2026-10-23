@@ -21,6 +21,9 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
 void setup() {
     Serial.begin(115200);
+    WiFi.mode(WIFI_STA);
+    Serial.print("MAC del Receptor: ");
+    Serial.println(WiFi.macAddress());
     tft.init();
     tft.setRotation(1);
     tft.fillScreen(TFT_BLACK);
@@ -28,7 +31,6 @@ void setup() {
     tft.setTextSize(2);
     tft.drawString("Esperando datos...", 10, 10);
 
-    WiFi.mode(WIFI_STA);
     if (esp_now_init() != ESP_OK) { 
         Serial.println("Error ESP-NOW"); 
         return; 
