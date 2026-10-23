@@ -29,7 +29,12 @@ void loop() {
     data.tempPromedio = bmp.readTemperature();
     data.presion = bmp.readPressure() / 100.0F;
     
-    esp_now_send(receiverMAC, (uint8_t *) &data, sizeof(data));
-    Serial.printf("Enviado: T=%.2f, P=%.2f\n", data.tempPromedio, data.presion);
+    esp_err_t result = esp_now_send(receiverMAC, (uint8_t *) &data, sizeof(data));
+    
+    if (result == ESP_OK) {
+        Serial.printf("Enviado con éxito: T=%.2f, P=%.2f\n", data.tempPromedio, data.presion);
+    } else {
+        Serial.println("Error en el envío");
+    }
     delay(2000);
 }
