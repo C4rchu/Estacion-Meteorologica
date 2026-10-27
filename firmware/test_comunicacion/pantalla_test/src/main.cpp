@@ -70,7 +70,6 @@ void setup() {
     tft.setTextColor(TFT_WHITE);
     tft.setTextSize(2);
     tft.drawString("Esperando datos...", 10, 10);
-
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error ESP-NOW"); 
         return; 
