@@ -8,7 +8,7 @@ TFT_eSPI tft = TFT_eSPI();
 WeatherData receivedData;
 bool newData = false;
 
-enum ScreenState { RESUMEN, SENSORES, VIENTO };
+enum ScreenState { RESUMEN, SENSORES, VIENTO, LLUVIA };
 ScreenState currentState = RESUMEN;
 unsigned long lastScreenChange = 0;
 const long screenInterval = 5000; // 5 segundos
@@ -43,11 +43,22 @@ void drawViento() {
     tft.drawString("Dir: " + String(receivedData.direccionViento), 10, 100);
 }
 
+void drawLluvia() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("LLUVIA", 10, 10);
+    tft.setTextSize(3);
+    tft.drawString("Acum: " + String(receivedData.lluviaAcumulada, 1) + " mm", 10, 60);
+    tft.drawString(receivedData.llueve ? "Lloviendo" : "Seco", 10, 100);
+}
+
 void drawCurrentScreen() {
     switch (currentState) {
         case RESUMEN: drawResumen(); break;
         case SENSORES: drawSensores(); break;
         case VIENTO: drawViento(); break;
+        case LLUVIA: drawLluvia(); break;
     }
 }
 
@@ -76,7 +87,7 @@ void loop() {
     // Cambio automático de pantalla
     if (millis() - lastScreenChange > screenInterval) {
         lastScreenChange = millis();
-        currentState = (ScreenState)((currentState + 1) % 3);
+        currentState = (ScreenState)((currentState + 1) % 4);
         drawCurrentScreen();
     }
     // Actualización si llegan datos nuevos
