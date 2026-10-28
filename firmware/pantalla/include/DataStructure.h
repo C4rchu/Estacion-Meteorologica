@@ -9,6 +9,7 @@ struct WeatherData {
     char direccionViento[10];
     float uv;
     bool llueve; // Del YL83
+    float lluviaAcumulada;
 };
 
 #endif
