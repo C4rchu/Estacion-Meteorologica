@@ -1,7 +1,7 @@
 #include "ESPNOW_Sender.h"
 
-// TODO: Reemplazar con la MAC real del ESP32 Pantalla
-uint8_t ESPNOWSender::receiverMAC[] = {0x68, 0x09, 0x47, 0x57, 0xC9, 0xDC};
+// MAC del ESP32 Pantalla
+uint8_t ESPNOWSender::receiverMAC[] = {0x10, 0x06, 0x1C, 0x83, 0xAC, 0xB8};
 
 ESPNOWSender::ESPNOWSender() {}
 
@@ -24,5 +24,10 @@ void ESPNOWSender::begin() {
 }
 
 void ESPNOWSender::sendData(WeatherData data) {
-    esp_now_send(receiverMAC, (uint8_t *) &data, sizeof(data));
+    esp_err_t result = esp_now_send(receiverMAC, (uint8_t *) &data, sizeof(data));
+    if (result == ESP_OK) {
+        Serial.println("Datos enviados con éxito");
+    } else {
+        Serial.println("Error al enviar datos");
+    }
 }

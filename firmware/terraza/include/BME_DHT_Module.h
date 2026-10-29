@@ -4,6 +4,7 @@
 #include <Adafruit_BMP085.h>
 #include <DHT.h>
 #include "Sensores.h"
+#include <math.h>
 
 class ClimaModule {
 public:

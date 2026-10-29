@@ -17,7 +17,13 @@ void ClimaModule::leerSensores() {
 }
 
 float ClimaModule::getTempPromedio() {
-    return (tempBMP + tempDHT) / 2.0;
+    bool bmpOk = !isnan(tempBMP);
+    bool dhtOk = !isnan(tempDHT);
+    
+    if (bmpOk && dhtOk) return (tempBMP + tempDHT) / 2.0;
+    if (bmpOk) return tempBMP;
+    if (dhtOk) return tempDHT;
+    return 0.0;
 }
 
 float ClimaModule::getHumedad() { return humDHT; }
