@@ -7,11 +7,19 @@
 TFT_eSPI tft = TFT_eSPI();
 WeatherData receivedData;
 bool newData = false;
+bool dataReceivedOnce = false;
 
 enum ScreenState { RESUMEN, SENSORES, VIENTO, LLUVIA };
 ScreenState currentState = RESUMEN;
 unsigned long lastScreenChange = 0;
 const long screenInterval = 5000; // 5 segundos
+
+void drawWaiting() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE);
+    tft.setTextSize(2);
+    tft.drawString("Esperando datos...", 10, 10);
+}
 
 void drawResumen() {
     tft.fillScreen(TFT_BLACK);
@@ -65,13 +73,14 @@ void drawCurrentScreen() {
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     memcpy(&receivedData, incomingData, sizeof(receivedData));
     newData = true;
+    dataReceivedOnce = true;
 }
 
 void setup() {
     Serial.begin(115200);
     tft.init();
     tft.setRotation(1);
-    tft.fillScreen(TFT_BLACK);
+    drawWaiting();
 
     WiFi.mode(WIFI_STA);
     if (esp_now_init() != ESP_OK) {
@@ -84,6 +93,8 @@ void setup() {
 }
 
 void loop() {
+    if (!dataReceivedOnce) return;
+
     // Cambio automático de pantalla
     if (millis() - lastScreenChange > screenInterval) {
         lastScreenChange = millis();
