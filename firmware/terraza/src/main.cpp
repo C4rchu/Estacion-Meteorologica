@@ -42,5 +42,11 @@ void loop() {
     
     sender.sendData(data);
     
+    // Debug: imprimir lo que enviamos
+    Serial.print("Enviando -> T: "); Serial.print(data.tempPromedio);
+    Serial.print(" | H: "); Serial.print(data.humedad);
+    Serial.print(" | V: "); Serial.print(data.velocidadViento);
+    Serial.println(" | Lluvia: " + String(data.lluviaAcumulada));
+    
     delay(2000);
 }
