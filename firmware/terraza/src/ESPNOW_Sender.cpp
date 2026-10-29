@@ -28,6 +28,7 @@ void ESPNOWSender::sendData(WeatherData data) {
     if (result == ESP_OK) {
         Serial.println("Datos enviados con éxito");
     } else {
-        Serial.println("Error al enviar datos");
+        Serial.print("Error al enviar datos. Código: ");
+        Serial.println(result);
     }
 }
