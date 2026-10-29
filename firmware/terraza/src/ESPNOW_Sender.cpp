@@ -1,7 +1,7 @@
 #include "ESPNOW_Sender.h"
 
 // MAC del ESP32 Pantalla
-uint8_t ESPNOWSender::receiverMAC[] = {0x10, 0x06, 0x1C, 0x83, 0xAC, 0xB8};
+uint8_t ESPNOWSender::receiverMAC[] = {0x68, 0x09, 0x47, 0x57, 0xC9, 0xDC};
 
 ESPNOWSender::ESPNOWSender() {}
 
