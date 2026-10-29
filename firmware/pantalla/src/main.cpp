@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <esp_now.h>
 #include <WiFi.h>
+#include <esp_wifi.h>
 #include "DataStructure.h"
 #include <TFT_eSPI.h>
 
@@ -71,6 +72,7 @@ void drawCurrentScreen() {
 }
 
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+    Serial.println("Datos recibidos por ESP-NOW");
     memcpy(&receivedData, incomingData, sizeof(receivedData));
     newData = true;
     dataReceivedOnce = true;
@@ -83,6 +85,7 @@ void setup() {
     drawWaiting();
 
     WiFi.mode(WIFI_STA);
+    esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
         return;

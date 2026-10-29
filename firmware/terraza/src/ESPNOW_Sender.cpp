@@ -1,4 +1,5 @@
 #include "ESPNOW_Sender.h"
+#include <esp_wifi.h>
 
 // MAC del ESP32 Pantalla
 uint8_t ESPNOWSender::receiverMAC[] = {0x68, 0x09, 0x47, 0x57, 0xC9, 0xDC};
@@ -7,6 +8,7 @@ ESPNOWSender::ESPNOWSender() {}
 
 void ESPNOWSender::begin() {
     WiFi.mode(WIFI_STA);
+    esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
         return;
@@ -14,7 +16,7 @@ void ESPNOWSender::begin() {
 
     esp_now_peer_info_t peerInfo;
     memcpy(peerInfo.peer_addr, receiverMAC, 6);
-    peerInfo.channel = 0;  
+    peerInfo.channel = 1;  
     peerInfo.encrypt = false;
 
     if (esp_now_add_peer(&peerInfo) != ESP_OK){
