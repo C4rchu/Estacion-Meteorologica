@@ -8,6 +8,7 @@ BME180 (SDA)    | GPIO 21
 BME180 (SCL)    | GPIO 22
 DHT22           | GPIO 4
 Anemómetro      | GPIO 5
+Pluviómetro     | GPIO 27 (Digital)
 Veleta          | GPIO 34 (ADC)
 YL-83 (AO)      | GPIO 35 (ADC)
 YL-83 (DO)      | GPIO 33 (Digital)
