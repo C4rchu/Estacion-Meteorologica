@@ -1,7 +1,7 @@
 #ifndef DATA_STRUCTURE_H
 #define DATA_STRUCTURE_H
 
-struct WeatherData {
+struct __attribute__((packed)) WeatherData {
     float tempPromedio;
     float humedad;
     float presion;

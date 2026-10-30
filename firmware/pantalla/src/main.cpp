@@ -96,7 +96,7 @@ void drawViento() {
     tft.drawString("Vel: " + String(receivedData.velocidadViento, 1) + " km/h", 10, 60);
     drawGraph(10, 100, 300, 150, histVel, TFT_CYAN, 0, 100);
     tft.setTextSize(2);
-    tft.drawString("Dir: " + String(receivedData.direccionViento), 10, 300);
+    tft.drawString("Dir: " + String(receivedData.direccionViento), 10, 260);
 }
 
 void drawLluvia() {
@@ -136,7 +136,15 @@ void sendToThingSpeak() {
 }
 
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-    memcpy(&receivedData, incomingData, sizeof(receivedData));
+    Serial.println("Datos recibidos por ESP-NOW");
+    WeatherData tempData;
+    memcpy(&tempData, incomingData, sizeof(tempData));
+    
+    // Debug
+    Serial.print("Recibido Temp: "); Serial.println(tempData.tempPromedio);
+    Serial.print("Recibido Dir: "); Serial.println(tempData.direccionViento);
+    
+    receivedData = tempData;
     newData = true;
     dataReceivedOnce = true;
     

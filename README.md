@@ -606,14 +606,14 @@ Durante el desarrollo se aplicarán conocimientos relacionados con:
  
  **En desarrollo — Proyecto Final de Carrera 2026**
  
- Actualmente el proyecto se encuentra en etapa de desarrollo y pruebas de los distintos subsistemas.
+ El sistema se encuentra en fase de calibración y desarrollo de la interfaz de usuario.
 
-> **Nota:** Se ha integrado un display de 4" (ST7796) para la visualización. El código base para la inicialización está cargado, pero la pantalla aún no muestra información correctamente. Se sigue trabajando en la configuración de la librería y las conexiones físicas.
+> **Nota:** Se ha completado la calibración de la veleta resistiva y la integración de gráficas en tiempo real para todos los parámetros meteorológicos en el display de 4" (ST7796).
  
  Los componentes, circuitos, algoritmos y métodos de procesamiento podrán modificarse durante el desarrollo en función de los resultados obtenidos en los ensayos.
-
-
-La documentación de este repositorio se actualizará a medida que avance el proyecto.
+ 
+ 
+ La documentación de este repositorio se actualizará a medida que avance el proyecto.
 
 
 
