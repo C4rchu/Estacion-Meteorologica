@@ -35,9 +35,10 @@ float WindModule::getVelocidad() { return windSpeed; }
 
 String WindModule::getDireccion() {
     int sensorValue = analogRead(PIN_VELETA);
-    // Ajustar rangos según pruebas previas
-    if (sensorValue >= 2000 && sensorValue <= 3000) return "Sur";
-    if (sensorValue >= 500  && sensorValue < 1500)  return "Norte";
-    if (sensorValue >= 0    && sensorValue < 400)   return "Este";
+    // Rangos calibrados: Norte (~4095), Este (~2800), Sur (~1500), Oeste (~600)
+    if (sensorValue >= 3500)                       return "Norte";
+    if (sensorValue >= 2400 && sensorValue < 3500) return "Este";
+    if (sensorValue >= 1100 && sensorValue < 2400) return "Sur";
+    if (sensorValue >= 200  && sensorValue < 1100) return "Oeste";
     return "---";
 }
