@@ -167,6 +167,10 @@ void setup() {
 
     tft.init();
     tft.setRotation(1);
+    
+    // Test visual
+    tft.fillScreen(TFT_RED);
+    delay(500);
     drawWaiting();
 
     if (esp_now_init() != ESP_OK) {
