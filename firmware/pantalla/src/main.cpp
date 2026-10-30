@@ -111,7 +111,13 @@ void drawCurrentScreen() {
 
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     Serial.println("Datos recibidos por ESP-NOW");
-    memcpy(&receivedData, incomingData, sizeof(receivedData));
+    WeatherData tempData;
+    memcpy(&tempData, incomingData, sizeof(tempData));
+    
+    // Debug
+    Serial.print("Recibido Temp: "); Serial.println(tempData.tempPromedio);
+    
+    receivedData = tempData;
     newData = true;
     dataReceivedOnce = true;
     
