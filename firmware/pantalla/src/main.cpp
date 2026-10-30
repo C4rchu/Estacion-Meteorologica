@@ -135,6 +135,10 @@ void setup() {
     Serial.begin(115200);
     tft.init();
     tft.setRotation(1);
+    
+    // Test visual
+    tft.fillScreen(TFT_RED);
+    delay(500);
     drawWaiting();
 
     WiFi.mode(WIFI_STA);
