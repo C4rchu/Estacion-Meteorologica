@@ -34,13 +34,20 @@ void loop() {
     data.velocidadViento = viento.getVelocidad();
     
     String dir = viento.getDireccion();
-    strncpy(data.direccionViento, dir.c_str(), sizeof(data.direccionViento));
+    memset(data.direccionViento, 0, sizeof(data.direccionViento));
+    strncpy(data.direccionViento, dir.c_str(), sizeof(data.direccionViento) - 1);
     
-    data.uv = analogRead(PIN_SENSOR_UV) * (3.3 / 4095.0); // Simple conversion, might need calibration
+    data.uv = analogRead(PIN_SENSOR_UV) * (3.3 / 4095.0); 
     data.llueve = lluvia.estaLloviendo();
-    if (!data.llueve) {
+    
+    // Solo resetear si ha pasado un tiempo prudencial sin lluvia, o usar un contador
+    static unsigned long lastRainTime = 0;
+    if (data.llueve) {
+        lastRainTime = millis();
+    } else if (millis() - lastRainTime > 10000) { // Esperar 10 segundos sin lluvia para resetear
         lluvia.resetLluvia();
     }
+    
     data.lluviaAcumulada = lluvia.getLluviaAcumulada();
     
     sender.sendData(data);
