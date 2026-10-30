@@ -38,6 +38,9 @@ void loop() {
     
     data.uv = analogRead(PIN_SENSOR_UV) * (3.3 / 4095.0); // Simple conversion, might need calibration
     data.llueve = lluvia.estaLloviendo();
+    if (!data.llueve) {
+        lluvia.resetLluvia();
+    }
     data.lluviaAcumulada = lluvia.getLluviaAcumulada();
     
     sender.sendData(data);
