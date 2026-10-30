@@ -4,6 +4,17 @@
 #include <esp_wifi.h>
 #include "DataStructure.h"
 #include <TFT_eSPI.h>
+#include <ThingSpeak.h>
+
+// Configuración WiFi y ThingSpeak
+const char* ssid = "BA escuela";
+const char* password = ""; 
+unsigned long myChannelNumber = 3560104;
+const char* myWriteAPIKey = "CSGQP14JOWFGKASE";
+
+WiFiClient client;
+unsigned long lastSendTime = 0;
+const long sendInterval = 90000; // 90 segundos
 
 TFT_eSPI tft = TFT_eSPI();
 WeatherData receivedData;
@@ -43,7 +54,7 @@ void drawGraph(int x, int y, int w, int h, float *data, uint32_t color, float mi
 enum ScreenState { RESUMEN, SENSORES, VIENTO, LLUVIA };
 ScreenState currentState = RESUMEN;
 unsigned long lastScreenChange = 0;
-const long screenInterval = 5000; // 5 segundos
+const long screenInterval = 5000;
 
 void drawWaiting() {
     tft.fillScreen(TFT_BLACK);
@@ -59,7 +70,7 @@ void drawResumen() {
     tft.drawString("RESUMEN", 10, 10);
     tft.setTextSize(3);
     tft.drawString("Temp: " + String(receivedData.tempPromedio, 1) + " C", 10, 60);
-    drawGraph(10, 100, 300, 80, histTemp, TFT_RED, 0, 50); // Ajustar rangos según necesidad
+    drawGraph(10, 100, 300, 80, histTemp, TFT_RED, 0, 50);
     tft.drawString("Hum: " + String(receivedData.humedad, 1) + " %", 10, 200);
     drawGraph(10, 240, 300, 80, histHum, TFT_BLUE, 0, 100);
 }
@@ -109,8 +120,22 @@ void drawCurrentScreen() {
     }
 }
 
+void sendToThingSpeak() {
+    if (WiFi.status() == WL_CONNECTED) {
+        ThingSpeak.setField(1, receivedData.tempPromedio);
+        ThingSpeak.setField(2, receivedData.humedad);
+        ThingSpeak.setField(3, receivedData.presion);
+        ThingSpeak.setField(4, receivedData.velocidadViento);
+        ThingSpeak.setField(5, receivedData.uv);
+        ThingSpeak.setField(6, receivedData.lluviaAcumulada);
+        
+        int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
+        if(x == 200) Serial.println("Datos enviados a ThingSpeak");
+        else Serial.println("Error enviando datos, codigo: " + String(x));
+    }
+}
+
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-    Serial.println("Datos recibidos por ESP-NOW");
     memcpy(&receivedData, incomingData, sizeof(receivedData));
     newData = true;
     dataReceivedOnce = true;
@@ -126,31 +151,38 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
 void setup() {
     Serial.begin(115200);
+    
+    WiFi.mode(WIFI_AP_STA);
+    WiFi.begin(ssid, password);
+    
+    ThingSpeak.begin(client);
+
     tft.init();
     tft.setRotation(1);
     drawWaiting();
 
-    WiFi.mode(WIFI_STA);
-    esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
     if (esp_now_init() != ESP_OK) {
         Serial.println("Error initializing ESP-NOW");
         return;
     }
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
     
-    Serial.println("Receptor ESP-NOW listo");
+    Serial.println("Receptor ESP-NOW y WiFi listo");
 }
 
 void loop() {
     if (!dataReceivedOnce) return;
 
-    // Cambio automático de pantalla
+    if (millis() - lastSendTime > sendInterval) {
+        sendToThingSpeak();
+        lastSendTime = millis();
+    }
+
     if (millis() - lastScreenChange > screenInterval) {
         lastScreenChange = millis();
         currentState = (ScreenState)((currentState + 1) % 4);
         drawCurrentScreen();
     }
-    // Actualización si llegan datos nuevos
     if (newData) {
         drawCurrentScreen();
         newData = false;
