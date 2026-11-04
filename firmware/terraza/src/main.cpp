@@ -56,7 +56,14 @@ void loop() {
     Serial.print("Enviando -> T: "); Serial.print(data.tempPromedio);
     Serial.print(" | H: "); Serial.print(data.humedad);
     Serial.print(" | V: "); Serial.print(data.velocidadViento);
-    Serial.println(" | Lluvia: " + String(data.lluviaAcumulada));
+    Serial.print(" | Direccion: "); Serial.print(dir);
+    Serial.print(" [N/E/S/O=");
+    Serial.print(digitalRead(PIN_VELETA_NORTE)); Serial.print("/");
+    Serial.print(digitalRead(PIN_VELETA_ESTE)); Serial.print("/");
+    Serial.print(digitalRead(PIN_VELETA_SUR)); Serial.print("/");
+    Serial.print(digitalRead(PIN_VELETA_OESTE)); Serial.print("]");
+    Serial.print(" | Lluvia: " + String(data.lluviaAcumulada));
+    Serial.println(" | UV: " + String(data.uv));
     
     delay(2000);
 }

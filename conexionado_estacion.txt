@@ -9,10 +9,19 @@ BME180 (SCL)    | GPIO 22
 DHT22           | GPIO 4
 Anemómetro      | GPIO 5
 Pluviómetro     | GPIO 27 (Digital)
-Veleta          | GPIO 34 (ADC)
+Veleta Norte    | GPIO 25 (Digital, reed a 3.3V)
+Veleta Este     | GPIO 26 (Digital, reed a 3.3V)
+Veleta Sur      | GPIO 14 (Digital, reed a 3.3V)
+Veleta Oeste    | GPIO 12 (Digital, reed a 3.3V)
 YL-83 (AO)      | GPIO 35 (ADC)
 YL-83 (DO)      | GPIO 33 (Digital)
 Sensor UV       | GPIO 32 (ADC)
+
+Los cuatro reeds usan entradas con pull-down interno: al cerrarse conectan
+su GPIO a 3.3V. Si no se activa exactamente un reed, la dirección se muestra
+como "---". GPIO 12 es un pin de configuración de arranque del ESP32; para
+evitar problemas de arranque se recomienda mover el reed Oeste a un GPIO
+libre que no sea de strapping si puede quedar activado al encender.
 
 ESP32 PANTALLA (RECEPTOR - 30 pines)
 ------------------------------------

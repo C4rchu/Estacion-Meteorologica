@@ -8,6 +8,11 @@ WindModule::WindModule() : windSpeed(0), lastTimeSpeed(0) {}
 void WindModule::begin() {
     pinMode(PIN_ANEMOMETRO, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(PIN_ANEMOMETRO), countPulse, FALLING);
+
+    pinMode(PIN_VELETA_NORTE, INPUT_PULLDOWN);
+    pinMode(PIN_VELETA_ESTE, INPUT_PULLDOWN);
+    pinMode(PIN_VELETA_SUR, INPUT_PULLDOWN);
+    pinMode(PIN_VELETA_OESTE, INPUT_PULLDOWN);
 }
 
 void IRAM_ATTR WindModule::countPulse() {
@@ -34,11 +39,25 @@ void WindModule::calcularViento() {
 float WindModule::getVelocidad() { return windSpeed; }
 
 String WindModule::getDireccion() {
-    int sensorValue = analogRead(PIN_VELETA);
-    // Rangos calibrados: Norte (~4095), Este (~2800), Sur (~1500), Oeste (~600)
-    if (sensorValue >= 3500)                       return "Norte";
-    if (sensorValue >= 2400 && sensorValue < 3500) return "Este";
-    if (sensorValue >= 1100 && sensorValue < 2400) return "Sur";
-    if (sensorValue >= 200  && sensorValue < 1100) return "Oeste";
+    bool norte = digitalRead(PIN_VELETA_NORTE) == HIGH;
+    bool este = digitalRead(PIN_VELETA_ESTE) == HIGH;
+    bool sur = digitalRead(PIN_VELETA_SUR) == HIGH;
+    bool oeste = digitalRead(PIN_VELETA_OESTE) == HIGH;
+    uint8_t activados = norte + este + sur + oeste;
+
+    if (activados == 1) {
+        if (norte) return "Norte";
+        if (este) return "Este";
+        if (sur) return "Sur";
+        return "Oeste";
+    }
+
+    if (activados == 2) {
+        if (norte && este) return "Noreste";
+        if (este && sur) return "Sureste";
+        if (sur && oeste) return "Suroeste";
+        if (oeste && norte) return "Noroeste";
+    }
+
     return "---";
 }
