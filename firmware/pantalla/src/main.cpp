@@ -96,7 +96,11 @@ void drawViento() {
     tft.drawString("Vel: " + String(receivedData.velocidadViento, 1) + " km/h", 10, 60);
     drawGraph(10, 100, 300, 150, histVel, TFT_CYAN, 0, 100);
     tft.setTextSize(2);
-    tft.drawString("Dir: " + String(receivedData.direccionViento), 10, 260);
+    if (strcmp(receivedData.direccionViento, "---") == 0) {
+        tft.drawString("Dir: recalculando...", 10, 260);
+    } else {
+        tft.drawString("Dir: " + String(receivedData.direccionViento), 10, 260);
+    }
 }
 
 void drawLluvia() {

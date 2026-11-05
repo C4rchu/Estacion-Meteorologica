@@ -8,7 +8,7 @@ async function updateDashboard() {
         document.getElementById('pres').innerText = data.pressure.toFixed(1);
         document.getElementById('uv').innerText = data.uv.toFixed(1);
         document.getElementById('wind').innerText = data.wind_speed.toFixed(0);
-        document.getElementById('dir').innerText = data.wind_direction;
+        document.getElementById('dir').innerText = data.wind_direction === '---' ? 'recalculando...' : data.wind_direction;
         
         const rainEl = document.getElementById('rain');
         rainEl.innerText = data.rain ? 'SÍ' : 'NO';
