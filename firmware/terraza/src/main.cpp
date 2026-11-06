@@ -19,7 +19,6 @@ void setup() {
     
     // Configurar ADC para sensor UV
     pinMode(PIN_SENSOR_UV, INPUT);
-    analogSetAttenuation(ADC_11db);
 }
 
 void loop() {
@@ -37,7 +36,7 @@ void loop() {
     memset(data.direccionViento, 0, sizeof(data.direccionViento));
     strncpy(data.direccionViento, dir.c_str(), sizeof(data.direccionViento) - 1);
     
-    data.uv = analogRead(PIN_SENSOR_UV) * (3.3 / 4095.0); 
+    data.uv = analogRead(PIN_SENSOR_UV); 
     data.llueve = lluvia.estaLloviendo();
     
     // Solo resetear si ha pasado un tiempo prudencial sin lluvia, o usar un contador
