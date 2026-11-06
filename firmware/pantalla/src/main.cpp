@@ -81,8 +81,8 @@ void drawSensores() {
     tft.setTextSize(2);
     tft.drawString("SENSORES", 10, 10);
     tft.setTextSize(3);
-    tft.drawString("UV: " + String(receivedData.uv, 1), 10, 60);
-    drawGraph(10, 100, 300, 80, histUV, TFT_YELLOW, 0, 15);
+    tft.drawString("UV: " + String((int)receivedData.uv), 10, 60);
+    drawGraph(10, 100, 300, 80, histUV, TFT_YELLOW, 0, 4095);
     tft.drawString("Pres: " + String(receivedData.presion, 0) + " hPa", 10, 200);
     drawGraph(10, 240, 300, 80, histPres, TFT_GREEN, 900, 1100);
 }
