@@ -23,7 +23,7 @@ int RainModule::leerIntensidad() {
 
 void IRAM_ATTR RainModule::countTip() {
     unsigned long now = millis();
-    if (now - lastTipTime >= 150) { // 150ms debouncing
+    if (now - lastTipTime >= 200) { // Aumentado a 200ms por seguridad
         cantidadVuelcos++;
         lastTipTime = now;
     }

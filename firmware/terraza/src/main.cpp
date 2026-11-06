@@ -18,6 +18,7 @@ void setup() {
     sender.begin();
     
     // Configurar ADC para sensor UV
+    analogSetAttenuation(ADC_11db); // IMPORTANTE para leer hasta 3.3V en pines ADC
     pinMode(PIN_SENSOR_UV, INPUT);
 }
 
